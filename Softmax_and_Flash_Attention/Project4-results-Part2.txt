@@ -1,0 +1,47 @@
+Job started at: Thu Dec 25 03:19:26 AM UTC 2025
+Node: node05
+------------------------------------------------------------------
+>>> Running Part 2: Triton Flash Attention
+Attention output correct for seq_len=256, d_model=32!
+Attention output correct for seq_len=256, d_model=64!
+Attention output correct for seq_len=256, d_model=128!
+Attention output correct for seq_len=512, d_model=32!
+Attention output correct for seq_len=512, d_model=64!
+Attention output correct for seq_len=512, d_model=128!
+Attention output correct for seq_len=1024, d_model=32!
+Attention output correct for seq_len=1024, d_model=64!
+Attention output correct for seq_len=1024, d_model=128!
+Attention output correct for seq_len=2048, d_model=32!
+Attention output correct for seq_len=2048, d_model=64!
+Attention output correct for seq_len=2048, d_model=128!
+pass all unit test
+-----------------------------------------
+flash-attention-performance:
+    seq_len      d=64     d=128      d=256
+0       4.0  0.028695  0.037538   0.015444
+1       8.0  0.029101  0.030898   0.013063
+2      16.0  0.017014  0.021296   0.011418
+3      32.0  0.030069  0.036626   0.030223
+4      64.0  0.031219  0.055236   0.041493
+5     128.0  0.032191  0.061131   0.061976
+6     256.0  0.058576  0.117025   0.119516
+7     512.0  0.112802  0.228451   0.767719
+8    1024.0  0.401477  0.457197   2.671954
+9    2048.0  1.378420  1.508823   8.960592
+10   4096.0  3.085051  6.098455  22.549216
+pytorch-attention-performance:
+    seq_len      d=64     d=128     d=256
+0       4.0  0.009099  0.012229  0.012674
+1       8.0  0.010131  0.013069  0.013889
+2      16.0  0.010101  0.013412  0.014387
+3      32.0  0.014056  0.015800  0.017761
+4      64.0  0.014273  0.016221  0.019116
+5     128.0  0.017868  0.017729  0.021413
+6     256.0  0.020680  0.024219  0.038965
+7     512.0  0.033874  0.043623  0.065785
+8    1024.0  0.102388  0.151506  0.226729
+9    2048.0  0.392049  0.548470  0.901091
+10   4096.0  1.555325  2.216211  3.658891
+------------------------------------------------------------------
+
+Job finished at: Thu Dec 25 03:20:27 AM UTC 2025

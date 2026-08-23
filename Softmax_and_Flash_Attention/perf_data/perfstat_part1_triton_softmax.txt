@@ -1,0 +1,16 @@
+# started on Thu Dec 25 06:39:01 2025
+
+
+ Performance counter stats for 'python3 ./part1_softmax_and_vector_add/triton_softmax.py':
+
+    29,759,695,703      cpu-cycles                                                  
+    52,399,885,705      instructions              #    1.76  insn per cycle         
+        53,774,982      cache-misses                                                
+           284,129      page-faults                                                 
+
+      13.213509029 seconds time elapsed
+
+      10.096899000 seconds user
+       0.915073000 seconds sys
+
+

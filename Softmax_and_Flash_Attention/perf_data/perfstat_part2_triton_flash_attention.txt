@@ -1,0 +1,16 @@
+# started on Thu Dec 25 06:39:36 2025
+
+
+ Performance counter stats for 'python3 ./part2_flash_attention/triton_part.py':
+
+   132,846,111,560      cpu-cycles                                                  
+   276,170,266,115      instructions              #    2.08  insn per cycle         
+       116,785,816      cache-misses                                                
+           668,303      page-faults                                                 
+
+      69.388322750 seconds time elapsed
+
+      46.648385000 seconds user
+       1.950401000 seconds sys
+
+

@@ -1,0 +1,16 @@
+# started on Thu Dec 25 06:39:28 2025
+
+
+ Performance counter stats for './part1_softmax_and_vector_add/cuda_softmax_exec 8192 4096':
+
+     9,185,695,956      cpu-cycles                                                  
+    13,784,761,519      instructions              #    1.50  insn per cycle         
+        17,046,207      cache-misses                                                
+           161,743      page-faults                                                 
+
+       3.256576362 seconds time elapsed
+
+       2.848645000 seconds user
+       0.363571000 seconds sys
+
+

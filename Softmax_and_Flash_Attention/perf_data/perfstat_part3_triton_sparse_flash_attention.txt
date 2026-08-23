@@ -1,0 +1,16 @@
+# started on Thu Dec 25 06:41:05 2025
+
+
+ Performance counter stats for 'python3 ./part3_sparse_flash_attention/triton_part.py':
+
+    28,826,269,799      cpu-cycles                                                  
+    56,080,068,008      instructions              #    1.95  insn per cycle         
+        44,307,578      cache-misses                                                
+           271,652      page-faults                                                 
+
+      10.475921622 seconds time elapsed
+
+       9.395546000 seconds user
+       0.746781000 seconds sys
+
+

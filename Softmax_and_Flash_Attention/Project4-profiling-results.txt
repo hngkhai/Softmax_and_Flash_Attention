@@ -1,0 +1,318 @@
+---- tool check ----
+/usr/bin/perf
+/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nsys
+NVIDIA Nsight Systems version 2023.2.1.122-32598524v0
+perf version 5.15.180
+--------------------
+Job started at: Thu Dec 25 06:39:00 AM UTC 2025
+Node: node05
+CUDA_VISIBLE_DEVICES=0
+------------------------------------------------------------------
+>>> Part 1: Triton Softmax (python)
+==================================================
+Profiling: part1_triton_softmax
+CMD: python3 ./part1_softmax_and_vector_add/triton_softmax.py
+==================================================
+256 * 16 [Scaling]: Correct!
+256 * 16 [Dropout]: Ran successfully. Zeros fraction: 0.64
+512 * 16 [Scaling]: Correct!
+512 * 16 [Dropout]: Ran successfully. Zeros fraction: 0.64
+1024 * 32 [Scaling]: Correct!
+1024 * 32 [Dropout]: Ran successfully. Zeros fraction: 0.62
+2048 * 32 [Scaling]: Correct!
+2048 * 32 [Dropout]: Ran successfully. Zeros fraction: 0.62
+4096 * 64 [Scaling]: Correct!
+4096 * 64 [Dropout]: Ran successfully. Zeros fraction: 0.59
+8192 * 64 [Scaling]: Correct!
+8192 * 64 [Dropout]: Ran successfully. Zeros fraction: 0.63
+pass all correctness test
+-----------------------------------------
+softmax-performance:
+        N    Triton     Torch  Naive Softmax
+0    64.0  0.139452  0.092895       0.187092
+1   128.0  0.112740  0.098334       0.189979
+2   256.0  0.116472  0.128536       0.209780
+3   512.0  0.141774  0.239808       0.385791
+4  1024.0  0.193147  0.428623       0.716178
+5  2048.0  0.194901  0.842260       1.374018
+6  4096.0  0.168982  1.669937       2.689937
+7  8192.0  0.168615  3.196500       5.319728
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+256 * 16 [Scaling]: Correct!
+256 * 16 [Dropout]: Ran successfully. Zeros fraction: 0.64
+512 * 16 [Scaling]: Correct!
+512 * 16 [Dropout]: Ran successfully. Zeros fraction: 0.64
+1024 * 32 [Scaling]: Correct!
+1024 * 32 [Dropout]: Ran successfully. Zeros fraction: 0.62
+2048 * 32 [Scaling]: Correct!
+2048 * 32 [Dropout]: Ran successfully. Zeros fraction: 0.62
+4096 * 64 [Scaling]: Correct!
+4096 * 64 [Dropout]: Ran successfully. Zeros fraction: 0.59
+8192 * 64 [Scaling]: Correct!
+8192 * 64 [Dropout]: Ran successfully. Zeros fraction: 0.63
+pass all correctness test
+-----------------------------------------
+softmax-performance:
+        N    Triton     Torch  Naive Softmax
+0    64.0  0.150433  0.106672       0.190969
+1   128.0  0.300544  0.122774       0.197487
+2   256.0  0.248075  0.143884       0.213125
+3   512.0  0.156633  0.229996       0.387600
+4  1024.0  0.305109  0.434850       0.718253
+5  2048.0  0.197447  0.846769       1.376951
+6  4096.0  0.172663  1.676573       2.695261
+7  8192.0  0.172961  3.208323       5.326366
+[ perf record: Woken up 215 times to write data ]
+Warning:
+Processed 9682 events and lost 15 chunks!
+
+Check IO/CPU overload!
+
+[ perf record: Captured and wrote 53.750 MB perf_data/perf_part1_triton_softmax.data (6691 samples) ]
+[nsys] start...
+[nsys] FAILED, see nsys_data/nsys_part1_triton_softmax.log
+[nsys] done.
+>>> Part 2: CUDA Softmax (nvcc compile)
+Compilation successful.
+
+>>> Part 2: CUDA Softmax (exec)
+==================================================
+Profiling: part2_cuda_softmax_N8192_C4096
+CMD: ./part1_softmax_and_vector_add/cuda_softmax_exec 8192 4096
+==================================================
+Running Correctness Check...
+Max absolute difference: 1.28057e-09
+PASS: GPU result matches CPU result.
+
+Running Benchmark (
+GPU Execution Time (10 runs): 
+Total Time: 28.4598 ms
+Average Time: 2.84598 ms
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Running Correctness Check...
+Max absolute difference: 1.39698e-09
+PASS: GPU result matches CPU result.
+
+Running Benchmark (
+GPU Execution Time (10 runs): 
+Total Time: 28.5075 ms
+Average Time: 2.85075 ms
+[ perf record: Woken up 102 times to write data ]
+[ perf record: Captured and wrote 25.589 MB perf_data/perf_part2_cuda_softmax_N8192_C4096.data (3214 samples) ]
+[nsys] start...
+[nsys] FAILED, see nsys_data/nsys_part2_cuda_softmax_N8192_C4096.log
+[nsys] done.
+>>> Part 2: Triton Flash Attention (python)
+==================================================
+Profiling: part2_triton_flash_attention
+CMD: python3 ./part2_flash_attention/triton_part.py
+==================================================
+Attention output correct for seq_len=256, d_model=32!
+Attention output correct for seq_len=256, d_model=64!
+Attention output correct for seq_len=256, d_model=128!
+Attention output correct for seq_len=512, d_model=32!
+Attention output correct for seq_len=512, d_model=64!
+Attention output correct for seq_len=512, d_model=128!
+Attention output correct for seq_len=1024, d_model=32!
+Attention output correct for seq_len=1024, d_model=64!
+Attention output correct for seq_len=1024, d_model=128!
+Attention output correct for seq_len=2048, d_model=32!
+Attention output correct for seq_len=2048, d_model=64!
+Attention output correct for seq_len=2048, d_model=128!
+pass all unit test
+-----------------------------------------
+flash-attention-performance:
+    seq_len      d=64     d=128      d=256
+0       4.0  0.028718  0.037829   0.015435
+1       8.0  0.029317  0.029927   0.019607
+2      16.0  0.023751  0.026091   0.013111
+3      32.0  0.016811  0.022248   0.018377
+4      64.0  0.017748  0.062092   0.055942
+5     128.0  0.045040  0.072122   0.061794
+6     256.0  0.058735  0.117114   0.119587
+7     512.0  0.112546  0.228160   0.767845
+8    1024.0  0.367218  0.455409   2.678314
+9    2048.0  1.192709  1.507075  10.644220
+10   4096.0  3.007039  6.022635  22.618625
+pytorch-attention-performance:
+    seq_len      d=64     d=128     d=256
+0       4.0  0.009208  0.012245  0.012701
+1       8.0  0.010106  0.013137  0.014013
+2      16.0  0.010150  0.013680  0.014624
+3      32.0  0.014189  0.015742  0.017873
+4      64.0  0.014237  0.015929  0.019031
+5     128.0  0.017927  0.018042  0.021361
+6     256.0  0.020799  0.024050  0.038958
+7     512.0  0.033880  0.043783  0.066111
+8    1024.0  0.102945  0.151959  0.228084
+9    2048.0  0.391850  0.546989  0.898125
+10   4096.0  1.557149  2.216587  3.681298
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Attention output correct for seq_len=256, d_model=32!
+Attention output correct for seq_len=256, d_model=64!
+Attention output correct for seq_len=256, d_model=128!
+Attention output correct for seq_len=512, d_model=32!
+Attention output correct for seq_len=512, d_model=64!
+Attention output correct for seq_len=512, d_model=128!
+Attention output correct for seq_len=1024, d_model=32!
+Attention output correct for seq_len=1024, d_model=64!
+Attention output correct for seq_len=1024, d_model=128!
+Attention output correct for seq_len=2048, d_model=32!
+Attention output correct for seq_len=2048, d_model=64!
+Attention output correct for seq_len=2048, d_model=128!
+pass all unit test
+-----------------------------------------
+flash-attention-performance:
+    seq_len      d=64     d=128      d=256
+0       4.0  0.028882  0.037751   0.018933
+1       8.0  0.023316  0.023996   0.012562
+2      16.0  0.016515  0.021517   0.011395
+3      32.0  0.016700  0.022043   0.018188
+4      64.0  0.017556  0.033820   0.032957
+5     128.0  0.031107  0.061223   0.061910
+6     256.0  0.058898  0.117750   0.120086
+7     512.0  0.113084  0.229189   0.411685
+8    1024.0  0.221304  0.455257   1.415207
+9    2048.0  0.742079  1.509927   5.635761
+10   4096.0  2.933175  6.021216  22.495768
+pytorch-attention-performance:
+    seq_len      d=64     d=128     d=256
+0       4.0  0.009303  0.012328  0.012734
+1       8.0  0.010128  0.013282  0.013932
+2      16.0  0.010243  0.013494  0.014400
+3      32.0  0.014247  0.015891  0.017843
+4      64.0  0.014335  0.015980  0.019194
+5     128.0  0.017905  0.018105  0.021328
+6     256.0  0.020853  0.024163  0.039105
+7     512.0  0.034027  0.043759  0.066227
+8    1024.0  0.102740  0.152498  0.229899
+9    2048.0  0.393967  0.551751  0.875179
+10   4096.0  1.565723  2.284916  3.708323
+[ perf record: Woken up 377 times to write data ]
+[ perf record: Captured and wrote 94.188 MB perf_data/perf_part2_triton_flash_attention.data (11713 samples) ]
+[nsys] start...
+[nsys] FAILED, see nsys_data/nsys_part2_triton_flash_attention.log
+[nsys] done.
+>>> Part 3: Triton Sparse Flash Attention (python)
+==================================================
+Profiling: part3_triton_sparse_flash_attention
+CMD: python3 ./part3_sparse_flash_attention/triton_part.py
+==================================================
+Attention output correct for seq_len=64, d_model=32!
+Attention output correct for seq_len=64, d_model=64!
+Attention output correct for seq_len=64, d_model=128!
+Attention output correct for seq_len=128, d_model=32!
+Attention output correct for seq_len=128, d_model=64!
+Attention output correct for seq_len=128, d_model=128!
+Attention output correct for seq_len=256, d_model=32!
+Attention output correct for seq_len=256, d_model=64!
+Attention output correct for seq_len=256, d_model=128!
+Attention output correct for seq_len=512, d_model=32!
+Attention output correct for seq_len=512, d_model=64!
+Attention output correct for seq_len=512, d_model=128!
+Attention output correct for seq_len=1024, d_model=32!
+Attention output correct for seq_len=1024, d_model=64!
+Attention output correct for seq_len=1024, d_model=128!
+Attention output correct for seq_len=2048, d_model=32!
+Attention output correct for seq_len=2048, d_model=64!
+Attention output correct for seq_len=2048, d_model=128!
+pass all unit test
+-----------------------------------------
+flash-attention-performance:
+   seq_len      d=64     d=128     d=256
+0    128.0  0.053201  0.063318  0.056156
+1    256.0  0.040035  0.051398  0.069543
+2    512.0  0.048126  0.060215  0.084506
+3   1024.0  0.058460  0.070886  0.169840
+4   2048.0  0.099285  0.125626  0.384108
+5   4096.0  0.220695  0.282812  0.876440
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Attention output correct for seq_len=64, d_model=32!
+Attention output correct for seq_len=64, d_model=64!
+Attention output correct for seq_len=64, d_model=128!
+Attention output correct for seq_len=128, d_model=32!
+Attention output correct for seq_len=128, d_model=64!
+Attention output correct for seq_len=128, d_model=128!
+Attention output correct for seq_len=256, d_model=32!
+Attention output correct for seq_len=256, d_model=64!
+Attention output correct for seq_len=256, d_model=128!
+Attention output correct for seq_len=512, d_model=32!
+Attention output correct for seq_len=512, d_model=64!
+Attention output correct for seq_len=512, d_model=128!
+Attention output correct for seq_len=1024, d_model=32!
+Attention output correct for seq_len=1024, d_model=64!
+Attention output correct for seq_len=1024, d_model=128!
+Attention output correct for seq_len=2048, d_model=32!
+Attention output correct for seq_len=2048, d_model=64!
+Attention output correct for seq_len=2048, d_model=128!
+pass all unit test
+-----------------------------------------
+flash-attention-performance:
+   seq_len      d=64     d=128     d=256
+0    128.0  0.053251  0.058746  0.058032
+1    256.0  0.040303  0.051484  0.069535
+2    512.0  0.048152  0.060212  0.084522
+3   1024.0  0.058528  0.070815  0.169831
+4   2048.0  0.099369  0.125522  0.384209
+5   4096.0  0.220565  0.282869  0.876597
+[ perf record: Woken up 201 times to write data ]
+[ perf record: Captured and wrote 50.243 MB perf_data/perf_part3_triton_sparse_flash_attention.data (6261 samples) ]
+[nsys] start...
+[nsys] FAILED, see nsys_data/nsys_part3_triton_sparse_flash_attention.log
+[nsys] done.
+------------------------------------------------------------------
+All profiling finished!
+
+Job finished at: Thu Dec 25 06:41:24 AM UTC 2025

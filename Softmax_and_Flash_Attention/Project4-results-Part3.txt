@@ -1,0 +1,35 @@
+Job started at: Thu Dec 25 06:36:25 AM UTC 2025
+Node: node05
+------------------------------------------------------------------
+>>> Running Part 3: Triton Flash Attention Sparse
+Attention output correct for seq_len=64, d_model=32!
+Attention output correct for seq_len=64, d_model=64!
+Attention output correct for seq_len=64, d_model=128!
+Attention output correct for seq_len=128, d_model=32!
+Attention output correct for seq_len=128, d_model=64!
+Attention output correct for seq_len=128, d_model=128!
+Attention output correct for seq_len=256, d_model=32!
+Attention output correct for seq_len=256, d_model=64!
+Attention output correct for seq_len=256, d_model=128!
+Attention output correct for seq_len=512, d_model=32!
+Attention output correct for seq_len=512, d_model=64!
+Attention output correct for seq_len=512, d_model=128!
+Attention output correct for seq_len=1024, d_model=32!
+Attention output correct for seq_len=1024, d_model=64!
+Attention output correct for seq_len=1024, d_model=128!
+Attention output correct for seq_len=2048, d_model=32!
+Attention output correct for seq_len=2048, d_model=64!
+Attention output correct for seq_len=2048, d_model=128!
+pass all unit test
+-----------------------------------------
+flash-attention-performance:
+   seq_len      d=64     d=128     d=256
+0    128.0  0.053111  0.076795  0.055192
+1    256.0  0.039448  0.050953  0.068475
+2    512.0  0.047341  0.059262  0.083256
+3   1024.0  0.057625  0.069808  0.167344
+4   2048.0  0.095501  0.123184  0.378282
+5   4096.0  0.217187  0.278355  0.862969
+------------------------------------------------------------------
+
+Job finished at: Thu Dec 25 06:36:36 AM UTC 2025
