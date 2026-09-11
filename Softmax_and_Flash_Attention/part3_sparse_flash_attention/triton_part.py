@@ -49,7 +49,7 @@ def flash_attention_v1(
         mask_offset = pid_m * num_blocks_n + block_n_idx
         is_active = tl.load(sparse_mask_ptr + mask_offset).to(tl.int1)
         
-        # Only compute if the mask allows it (Optimized from Friend's logic)
+        # Only compute if the mask allows it
         if is_active:
             offs_n = start_n + tl.arange(0, BLOCK_N)
             
