@@ -63,7 +63,7 @@ def flash_attention_v1(
             k = tl.load(k_ptrs, mask=col_mask[:, None], other=0.0).to(tl.float32)
             v = tl.load(v_ptrs, mask=col_mask[:, None], other=0.0).to(tl.float32)
             
-            # --- Attention Core (Logic from Friend's Code) ---
+            # --- Attention Core ---
             s = tl.dot(q, tl.trans(k)) * scale_factor
             
             # Apply masking for out-of-bounds keys
