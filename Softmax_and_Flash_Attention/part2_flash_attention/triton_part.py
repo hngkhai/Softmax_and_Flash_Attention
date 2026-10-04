@@ -50,8 +50,11 @@ def flash_attention_v1(
 
     q = tl.load(q_ptrs, mask=(offs_m[:, None] < seq_len), other=0.0).to(tl.float32)
 
+    #   m   -> m_i (running maximum)
+    #   l   -> d_i (running denominator)
+    #   acc -> o_i * d_i (running UNNORMALIZED output)
 
-    ## accumulator for the numerator
+    ## accumulator for the unnormalized output
     acc = tl.zeros([BLOCK_M, d_model], dtype=tl.float32)
 
     ## accumulator for the denominator
@@ -69,15 +72,28 @@ def flash_attention_v1(
         k = tl.load(k_ptrs, mask=(offs_n[:, None] < seq_len), other=0.0).to(tl.float32)
         v = tl.load(v_ptrs, mask=(offs_n[:, None] < seq_len), other=0.0).to(tl.float32)
 
+        # s = (Q @ K^T) * scale_factor   ->   shape [BLOCK_M, BLOCK_N]
         s = tl.dot(q, tl.trans(k)) * scale_factor  # [BM, BN]
 
+        # online softmax update
+        # m_i -> max(x_i, m_{i-1})
+        # d_i -> d_{i-1} * e^{m_{i-1} - m_i} + e^{x_i - m_i}
+        # o_i -> o_{i-1} * (d_{i-1}/d_i) * e^{m_{i-1} - m_i}
+        #          + (e^{x_i - m_i} / d_i) * V_i
+
+        # m_i -> max(x_i, m_{i-1})
         m_ij = tl.max(s, axis=1)
         m_new = tl.maximum(m, m_ij)
-  
+
+        # d_i -> d_{i-1} * e^{m_{i-1} - m_i} + e^{x_i - m_i}
         alpha = tl.exp(m - m_new)                 # [BM]
         p = tl.exp(s - m_new[:, None])            # [BM, BN]
         l_new = alpha * l + tl.sum(p, axis=1)     # [BM]
+
+        # o_i -> o_{i-1} * (d_{i-1}/d_i) * e^{m_{i-1} - m_i}
+        #          + (e^{x_i - m_i} / d_i) * V_i
         acc = alpha[:, None] * acc + tl.dot(p, v) # [BM, D]
+
         l = l_new
         m = m_new
 
